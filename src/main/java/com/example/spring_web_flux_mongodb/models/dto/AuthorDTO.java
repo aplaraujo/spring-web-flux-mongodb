@@ -1,21 +1,16 @@
-package com.example.spring_web_flux_mongodb.models.embedded;
+package com.example.spring_web_flux_mongodb.models.dto;
 
-import com.example.spring_web_flux_mongodb.models.entities.User;
+public class AuthorDTO {
 
-public class Author {
     private String id;
     private String name;
 
-    public Author() {}
-
-    public Author(String id, String name) {
-        this.id = id;
-        this.name = name;
+    public AuthorDTO() {
     }
 
-    public Author(User entity) {
-        this.id = entity.getId();
-        this.name = entity.getName();
+    public AuthorDTO(String id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
     public String getId() {

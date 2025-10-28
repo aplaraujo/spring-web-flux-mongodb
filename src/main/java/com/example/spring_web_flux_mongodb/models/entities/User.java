@@ -1,25 +1,23 @@
 package com.example.spring_web_flux_mongodb.models.entities;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
 
-@Document(collection = "users") // Mapear a classe como uma coleção do MongoDB
+@Document(collection = "user")
 public class User {
+
     @Id
     private String id;
     private String name;
     private String email;
 
-    // Lista de publicações de um determinado usuário
-    @DBRef(lazy = true) // Lista que faz referência à entidade Posts
-    private List<Post> posts = new ArrayList<>();
-    public User() {}
+    public User() {
+    }
 
     public User(String id, String name, String email) {
+        super();
         this.id = id;
         this.name = name;
         this.email = email;
@@ -49,7 +47,20 @@ public class User {
         this.email = email;
     }
 
-    public List<Post> getPosts() {
-        return posts;
+    @Override
+    public int hashCode() {
+        return Objects.hash(email, id, name);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        User other = (User) obj;
+        return Objects.equals(email, other.email) && Objects.equals(id, other.id) && Objects.equals(name, other.name);
     }
 }

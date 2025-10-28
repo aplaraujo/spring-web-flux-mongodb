@@ -1,7 +1,5 @@
 package com.example.spring_web_flux_mongodb.models.dto;
 
-import com.example.spring_web_flux_mongodb.models.embedded.Author;
-import com.example.spring_web_flux_mongodb.models.embedded.Comment;
 import com.example.spring_web_flux_mongodb.models.entities.Post;
 
 import java.time.Instant;
@@ -9,30 +7,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PostDTO {
+
     private String id;
-    private Instant moment;
+    private Instant date;
     private String title;
     private String body;
-    private Author author;
-    private List<Comment> comments = new ArrayList<>();
 
-    public PostDTO() {}
+    private AuthorDTO author;
 
-    public PostDTO(String id, Instant moment, String title, String body, Author author) {
-        this.id = id;
-        this.moment = moment;
-        this.title = title;
-        this.body = body;
-        this.author = author;
+    private List<CommentDTO> comments = new ArrayList<>();
+
+    public PostDTO() {
     }
 
-    public PostDTO(Post entity) {
-        this.id = entity.getId();
-        this.moment = entity.getMoment();
-        this.title = entity.getTitle();
-        this.body = entity.getBody();
-        this.author = entity.getAuthor();
-        this.comments.addAll(entity.getComments());
+    public PostDTO(String id, Instant date, String title, String body, String authorId, String authorName,
+                   AuthorDTO author) {
+        this.id = id;
+        this.date = date;
+        this.title = title;
+        this.body = body;
+        author = new AuthorDTO(authorId, authorName);
+    }
+
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    public PostDTO(Post post) {
+        this.id = post.getId();
+        this.date = post.getDate();
+        this.title = post.getTitle();
+        this.body = post.getBody();
+        author = new AuthorDTO(post.getAuthorId(), post.getAuthorName());
+
+        List result = List.copyOf(post.getComments());
+        comments.addAll(result);
     }
 
     public String getId() {
@@ -43,12 +49,12 @@ public class PostDTO {
         this.id = id;
     }
 
-    public Instant getMoment() {
-        return moment;
+    public Instant getDate() {
+        return date;
     }
 
-    public void setMoment(Instant moment) {
-        this.moment = moment;
+    public void setDate(Instant date) {
+        this.date = date;
     }
 
     public String getTitle() {
@@ -67,15 +73,19 @@ public class PostDTO {
         this.body = body;
     }
 
-    public Author getAuthor() {
+    public AuthorDTO getAuthor() {
         return author;
     }
 
-    public void setAuthor(Author author) {
+    public void setAuthor(AuthorDTO author) {
         this.author = author;
     }
 
-    public List<Comment> getComments() {
+    public List<CommentDTO> getComments() {
         return comments;
+    }
+
+    public void addComments() {
+
     }
 }
